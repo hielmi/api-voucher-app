@@ -1,0 +1,30 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+
+# Dependency directories
+node_modules/
+
+# Distribution directory
+dist/
+
+# macOS specific
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+
+# npm package files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
