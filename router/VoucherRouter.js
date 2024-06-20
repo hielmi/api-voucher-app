@@ -6,6 +6,7 @@ import {
   getVoucher,
   updateVoucher,
 } from "../controllers/VoucherController.js";
+import { claimVoucer, unclaimVoucher } from "../controllers/ClaimController.js";
 import AuthMiddleware from "../middlewares/AuthMiddleware.js";
 import roleValidation from "../middlewares/RoleValidation.js";
 import UploadMiddleware from "../middlewares/UploadMiddleware.js";
@@ -16,7 +17,7 @@ const voucherRouter = express.Router();
 voucherRouter.get("/vouchers", getAllVouchers);
 
 // protected route
-voucherRouter.get("/voucher", AuthMiddleware, getVoucher);
+voucherRouter.get("/voucher/:id", AuthMiddleware, getVoucher);
 voucherRouter.post(
   "/voucher",
   AuthMiddleware,
@@ -26,7 +27,7 @@ voucherRouter.post(
 );
 
 voucherRouter.put(
-  "/voucher",
+  "/voucher/:id",
   AuthMiddleware,
   roleValidation("admin"),
   UploadMiddleware.single("foto"),
@@ -34,10 +35,14 @@ voucherRouter.put(
 );
 
 voucherRouter.delete(
-  "/voucher",
+  "/voucher/:id",
   AuthMiddleware,
   roleValidation("admin"),
   deleteVoucher
 );
+
+// claim and unclaim voucher
+voucherRouter.post("/claim-voucher", AuthMiddleware, claimVoucer);
+voucherRouter.delete("/unclaim-voucher/:id", AuthMiddleware, unclaimVoucher);
 
 export default voucherRouter;

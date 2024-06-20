@@ -10,7 +10,7 @@ export const getAllVouchers = async (req, res, next) => {
 };
 
 export const getVoucher = async (req, res, next) => {
-  const { id } = req.query;
+  const { id } = req.params;
   if (!id) {
     throw new CustomError("Query id must be filled");
   }
@@ -32,27 +32,31 @@ export const addVoucher = async (req, res, next) => {
   const foto = req?.file?.filename || null;
   const { nama, kategori } = req.body;
 
-  if (!(nama && kategori)) {
-    throw new CustomError("nama and kategori must be filled", 400);
+  try {
+    if (!(nama && kategori)) {
+      throw new CustomError("nama and kategori must be filled", 400);
+    }
+
+    const newVoucher = await Voucher.create({
+      nama,
+      kategori,
+      foto,
+      status: false,
+    });
+
+    if (!newVoucher) {
+      throw new CustomError("Failed to add voucher, something wrong", 400);
+    }
+
+    responseSuccess(res, 201, "Success add voucher", [newVoucher]);
+  } catch (error) {
+    next(error);
   }
-
-  const newVoucher = await Voucher.create({
-    nama,
-    kategori,
-    foto,
-    status: false,
-  });
-
-  if (!newVoucher) {
-    throw new CustomError("Failed to add voucher, something wrong", 400);
-  }
-
-  responseSuccess(res, 201, "Success add voucher", [newVoucher]);
 };
 
 export const updateVoucher = async (req, res, next) => {
   const foto = req?.file?.filename || null;
-  const { id } = req.query;
+  const { id } = req.params;
   const { nama, kategori } = req.body;
 
   try {
@@ -111,7 +115,7 @@ export const updateVoucher = async (req, res, next) => {
 };
 
 export const deleteVoucher = async (req, res, next) => {
-  const { id } = req.query;
+  const { id } = req.params;
 
   try {
     if (!id) {
