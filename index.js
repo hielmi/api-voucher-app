@@ -4,11 +4,13 @@ import dbConfig from "./config/db.js";
 import dotenv from "dotenv";
 import errorHandler from "./middlewares/ErrorHandler.js";
 import router from "./router/IndexRouter.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.static("public"));
