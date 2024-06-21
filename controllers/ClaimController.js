@@ -60,6 +60,8 @@ export const unclaimVoucher = async (req, res, next) => {
       throw new CustomError("Claim not found", 404);
     }
 
+    const idVoucher = voucherClaim.id_voucher;
+
     await VoucherClaim.destroy({
       where: {
         id: id,
@@ -71,7 +73,7 @@ export const unclaimVoucher = async (req, res, next) => {
       { status: false },
       {
         where: {
-          id: id,
+          id: idVoucher,
         },
       }
     );
