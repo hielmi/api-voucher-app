@@ -3,6 +3,22 @@ import VoucherClaim from "../models/VoucherClaimModel.js";
 import { responseSuccess } from "../utils/responseTemplate.js";
 import Voucher from "../models/VoucherModel.js";
 
+export const getClaimedVoucher = async (req, res, next) => {
+  const id_user = req.user.id;
+
+  try {
+    const claimedVoucher = await VoucherClaim.findAll({
+      where: {
+        id_user: id_user,
+      },
+    });
+
+    responseSuccess(res, 200, "Success get claimed voucher", claimedVoucher);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const claimVoucer = async (req, res, next) => {
   try {
     const { id } = req.body;
