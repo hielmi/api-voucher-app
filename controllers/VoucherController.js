@@ -133,9 +133,11 @@ export const deleteVoucher = async (req, res, next) => {
     }
 
     //remove foto
-    const removeFoto = removeOldFoto(voucher.foto);
-    if (!removeFoto) {
-      throw new CustomError("Failed to delete voucher", 400);
+    if (voucher.foto) {
+      const removeFoto = removeOldFoto(voucher.foto);
+      if (!removeFoto) {
+        throw new CustomError("Failed to delete voucher", 400);
+      }
     }
 
     const deletedVoucher = await Voucher.destroy({
