@@ -6,7 +6,11 @@ import {
   getVoucher,
   updateVoucher,
 } from "../controllers/VoucherController.js";
-import { claimVoucer, unclaimVoucher } from "../controllers/ClaimController.js";
+import {
+  claimVoucer,
+  getClaimedVoucher,
+  unclaimVoucher,
+} from "../controllers/ClaimController.js";
 import AuthMiddleware from "../middlewares/AuthMiddleware.js";
 import roleValidation from "../middlewares/RoleValidation.js";
 import UploadMiddleware from "../middlewares/UploadMiddleware.js";
@@ -42,7 +46,7 @@ voucherRouter.delete(
 );
 
 // claim and unclaim voucher
-voucherRouter.get("/claim-vouchers", AuthMiddleware, claimVoucer);
+voucherRouter.get("/claim-vouchers", AuthMiddleware, getClaimedVoucher);
 voucherRouter.post("/claim-voucher", AuthMiddleware, claimVoucer);
 voucherRouter.delete("/unclaim-voucher/:id", AuthMiddleware, unclaimVoucher);
 
