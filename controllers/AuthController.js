@@ -1,7 +1,7 @@
 import { Op } from "sequelize";
 import CustomError from "../utils/customError.js";
 import User from "../models/UserModel.js";
-import { comparePassword, encryptPassword } from "../utils/passwordService.js";
+import { encryptPassword, comparePassword } from "../utils/passwordService.js";
 import {
   responseSuccess,
   responseSuccessWithToken,
@@ -74,7 +74,11 @@ export const loginUser = async (req, res, next) => {
       throw new CustomError("Email or username doesn't exist", 400);
     }
 
-    if (!comparePassword(password, existingUser.password)) {
+    const comparedPassword = await comparePassword(
+      password,
+      existingUser.password
+    );
+    if (!comparedPassword) {
       throw new CustomError("Password wrong", 400);
     }
 
