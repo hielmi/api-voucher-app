@@ -14,7 +14,7 @@ export const getProfile = async (req, res, next) => {
       throw new CustomError("User not found", 404);
     }
 
-    responseSuccess(res, 200, "Success get profile", [user]);
+    responseSuccess(res, 200, "Success get profile", user);
   } catch (err) {
     next(err);
   }

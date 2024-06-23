@@ -104,11 +104,22 @@ export const updateVoucher = async (req, res, next) => {
       },
     });
 
+    if (updateVoucher[0] === 0) {
+      throw new CustomError(
+        "Failed to update voucher, the voucher doesn't exist"
+      );
+    }
+    const voucher = await Voucher.findOne({
+      where: {
+        id: id,
+      },
+    });
+
     if (!updatedVoucher) {
       throw new CustomError("Failed to update voucher", 400);
     }
 
-    responseSuccess(res, 200, "Success updated voucher");
+    responseSuccess(res, 200, "Success updated voucher", [voucher]);
   } catch (error) {
     next(error);
   }
